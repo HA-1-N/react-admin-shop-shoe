@@ -16,8 +16,11 @@ export const createProduct = async (data) => {
   return await adminRequest.post(`${HTTP_MGMT}/product/create`, data);
 };
 
-export const updateProduct = async (data) => {
-  return await adminRequest.post(`${HTTP_MGMT}/product/update`, data);
+export const updateProduct = async (data, productCode) => {
+  return await adminRequest.post(
+    `${HTTP_MGMT}/product/update/${productCode}`,
+    data
+  );
 };
 
 export const deleteProduct = async (data) => {

@@ -16,6 +16,9 @@ import axios from "axios";
 import { HTTP_MGMT } from "../utils/domain-config";
 import { adminRequest } from "../utils/axios-config-admin";
 import { createProduct } from "../api/product.api";
+import { filterCategoryApi } from "../api/category.api";
+import { filterColorApi } from "../api/color.api";
+import { filterSizeApi } from "../api/size.api";
 let schema = yup.object().shape({
   productCode: yup.string().required("productCode is Required"),
   name: yup.string().required("Name is Required"),
@@ -38,64 +41,6 @@ let schema = yup.object().shape({
   // quantity: yup.number().required("Quantity is Required"),
 });
 
-const sizeOpt = [
-  {
-    value: "35",
-    label: "35",
-  },
-  {
-    value: "36",
-    label: "36",
-  },
-  {
-    value: "37",
-    label: "37",
-  },
-  {
-    value: "38",
-    label: "38",
-  },
-  {
-    value: "39",
-    label: "39",
-  },
-  {
-    value: "40",
-    label: "40",
-  },
-  {
-    value: "41",
-    label: "41",
-  },
-  {
-    value: "42",
-    label: "42",
-  },
-  {
-    value: "43",
-    label: "43",
-  },
-  {
-    value: "44",
-    label: "44",
-  },
-  {
-    value: "45",
-    label: "45",
-  },
-];
-
-const categoriesOtp = [
-  {
-    value: "sport",
-    label: "Thể thao",
-  },
-  {
-    value: "street",
-    label: "Đường phố",
-  },
-];
-
 const Addproduct = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -107,6 +52,7 @@ const Addproduct = () => {
   const [brandDetail, setBrandDetail] = useState([]);
   const [colorDetail, setColorDetail] = useState([]);
   const [sizeDetail, setSizeDetail] = useState([]);
+  const [categoryDetail, setCategoryDetail] = useState([]);
 
   const getBrandsDetail = async () => {
     const data = {
@@ -140,12 +86,50 @@ const Addproduct = () => {
     });
   };
 
+  const getSizesDetail = async () => {
+    const data = {
+      sizeCode: "",
+      sizeName: "",
+    };
+    const params = {
+      page: 1,
+      limit: 10000,
+    };
+
+    filterSizeApi(data, params)
+      .then((res) => {
+        const data = res?.data?.data;
+        setSizeDetail(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const getCategoryDetail = async () => {
+    const data = {
+      categoryName: "",
+    };
+    const params = {
+      page: 1,
+      limit: 10000,
+    };
+
+    filterCategoryApi(data, params)
+      .then((res) => {
+        const data = res?.data?.data;
+        setCategoryDetail(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   useEffect(() => {
-    // dispatch(getBrands());
-    // dispatch(getCategories());
-    // dispatch(getColors());
     getBrandsDetail();
     getColorsDetail();
+    getSizesDetail();
+    getCategoryDetail();
   }, []);
 
   // const imgState = useSelector((state) => state.upload.images);
@@ -173,6 +157,22 @@ const Addproduct = () => {
     brandopt.push({
       label: i.name,
       value: i.brandCode,
+    });
+  });
+
+  const sizeopt = [];
+  sizeDetail.forEach((i) => {
+    sizeopt.push({
+      label: i.sizeName,
+      value: i.sizeCode,
+    });
+  });
+
+  const categoriesopt = [];
+  categoryDetail.forEach((i) => {
+    categoriesopt.push({
+      label: i.categoryName,
+      value: i.categoryName,
     });
   });
 
@@ -331,7 +331,7 @@ const Addproduct = () => {
             placeholder="Select categories"
             value={categories}
             onChange={(i) => handleChangeCategories(i)}
-            options={categoriesOtp}
+            options={categoriesopt}
           />
           <div className="error">
             {formik.touched.categories && formik.errors.categories}
@@ -345,7 +345,7 @@ const Addproduct = () => {
             placeholder="Select sizes"
             value={size}
             onChange={(i) => handleChangeSize(i)}
-            options={sizeOpt}
+            options={sizeopt}
           />
           <div className="error">
             {formik.touched.size && formik.errors.size}
