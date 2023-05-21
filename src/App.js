@@ -26,6 +26,8 @@ import ViewEnq from "./pages/ViewEnq";
 import ViewOrder from "./pages/ViewOrder";
 import AuthenticationRouter from "./features/auth/AuthenticationRouter";
 import UpdateProduct from "./pages/product/UpdateProduct";
+import Profile from "./pages/user/profile/Profile";
+import EditProfile from "./pages/user/update/EditProfile";
 function App() {
   return (
     <Router>
@@ -64,13 +66,15 @@ function App() {
           <Route path="category/:id" element={<Addcat />} />
           <Route path="list-brand" element={<Brandlist />} />
           <Route path="brand" element={<Addbrand />} />
-          <Route path="brand/:id" element={<Addbrand />} />
+          <Route path="brand/:brandCode" element={<Addbrand />} />
           <Route path="list-product" element={<Productlist />} />
           <Route path="product" element={<Addproduct />} />
           <Route
             path="update-product/:productCode"
             element={<UpdateProduct />}
           />
+          <Route path="profile/:id" element={<Profile />} />
+          <Route path="edit-profile/:id" element={<EditProfile />} />
         </Route>
       </Routes>
     </Router>

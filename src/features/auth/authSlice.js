@@ -48,9 +48,9 @@ export const getOrderByUser = createAsyncThunk(
 
 export const getCurrentUserApiAsync = createAsyncThunk(
   "auth/currentUser",
-  async () => {
+  async (id) => {
     try {
-      return await authService.getCurrentUser();
+      return await authService.getCurrentUser(id);
     } catch (error) {
       throw Error(error);
     }

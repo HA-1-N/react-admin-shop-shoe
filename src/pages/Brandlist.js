@@ -2,19 +2,19 @@ import React, { useEffect, useState } from "react";
 import { Table } from "antd";
 import { BiEdit } from "react-icons/bi";
 import { AiFillDelete } from "react-icons/ai";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  deleteABrand,
-  getBrands,
-  resetState,
-} from "../features/brand/brandSlice";
+import { resetState } from "../features/brand/brandSlice";
 import CustomModal from "../components/CustomModal";
+import { deleteBrandApi, filterBrandApi } from "../api/brand.api";
+import { PAGE_SIZE } from "../constants/page.constants";
+import { toast } from "react-toastify";
+import { Box, Button, Pagination } from "@mui/material";
 
 const columns = [
   {
-    title: "SNo",
-    dataIndex: "key",
+    title: "Code",
+    dataIndex: "brandCode",
   },
   {
     title: "Name",
@@ -28,38 +28,67 @@ const columns = [
 ];
 
 const Brandlist = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const [open, setOpen] = useState(false);
   const [brandId, setbrandId] = useState("");
-  const showModal = (e) => {
+  const [page, setPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(0);
+  const [brandDetail, setBrandDetail] = useState([]);
+  const [brandItem, setBrandItem] = useState(null);
+
+  const showModal = (item) => {
     setOpen(true);
-    setbrandId(e);
+    setbrandId(item?._id);
+    setBrandItem(item);
   };
 
   const hideModal = () => {
     setOpen(false);
   };
-  const dispatch = useDispatch();
+
+  const getBrandDetail = async () => {
+    const data = {
+      brandCode: "",
+      name: "",
+    };
+    const params = {
+      page: page,
+      limit: PAGE_SIZE,
+    };
+    filterBrandApi(data, params)
+      .then((res) => {
+        setBrandDetail(res?.data?.data);
+        setTotalPage(res?.data?.pagination?.totalPages);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   useEffect(() => {
     dispatch(resetState());
-    dispatch(getBrands());
+    getBrandDetail();
   }, []);
-  const brandState = useSelector((state) => state.brand.brands);
+
   const data1 = [];
-  for (let i = 0; i < brandState.length; i++) {
+  for (let i = 0; i < brandDetail.length; i++) {
     data1.push({
       key: i + 1,
-      name: brandState[i].title,
+      brandCode: brandDetail[i].brandCode,
+      name: brandDetail[i].name,
       action: (
         <>
           <Link
-            to={`/admin/brand/${brandState[i]._id}`}
+            to={`/admin/brand/${brandDetail[i].brandCode}`}
             className=" fs-3 text-danger"
           >
             <BiEdit />
           </Link>
           <button
             className="ms-3 fs-3 text-danger bg-transparent border-0"
-            onClick={() => showModal(brandState[i]._id)}
+            onClick={() => showModal(brandDetail[i])}
           >
             <AiFillDelete />
           </button>
@@ -67,19 +96,55 @@ const Brandlist = () => {
       ),
     });
   }
-  const deleteBrand = (e) => {
-    dispatch(deleteABrand(e));
-
-    setOpen(false);
-    setTimeout(() => {
-      dispatch(getBrands());
-    }, 100);
+  const deleteBrand = async (e) => {
+    const data = {
+      brandCode: brandItem?.brandCode,
+    };
+    deleteBrandApi(data)
+      .then((res) => {
+        if (res) {
+          setOpen(false);
+          setTimeout(() => {
+            getBrandDetail();
+          }, 100);
+          toast.success("Delete brand successful");
+        } else {
+          toast.error("Error");
+        }
+      })
+      .catch((err) => {
+        toast.error(err);
+      });
   };
+
+  const handleClickBtnAddBrand = () => {
+    navigate("/admin/brand");
+  };
+
+  const onChangePage = (e, pageNumber) => {
+    setPage(pageNumber);
+  };
+
   return (
     <div>
-      <h3 className="mb-4 title">Brands</h3>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <h3 className="mb-4 title">Products</h3>
+        <Button
+          sx={{ marginBottom: "1.5rem" }}
+          onClick={handleClickBtnAddBrand}
+        >
+          Add brand
+        </Button>
+      </Box>
       <div>
         <Table columns={columns} dataSource={data1} />
+        <Pagination page={page} count={totalPage} onChange={onChangePage} />
       </div>
       <CustomModal
         hideModal={hideModal}

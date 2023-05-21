@@ -33,8 +33,9 @@ const Login = () => {
   const { user, isError, isSuccess, isLoading, message } = authState.auth;
 
   useEffect(() => {
-    if (isSuccess && user.isAdmin) {
+    if (isSuccess && user?.isAdmin) {
       navigate("admin");
+      // toast.success("Login successful !");
     } else {
       navigate("");
     }

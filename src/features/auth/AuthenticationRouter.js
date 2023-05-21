@@ -8,13 +8,14 @@ const AuthenticationRouter = (props) => {
   const dispatch = useDispatch();
   const getUser = localStorage.getItem("user");
   const user = JSON.parse(getUser);
-  const accessToken = user.accessToken;
+  const accessToken = user?.accessToken;
+  const id = user?._id;
   const currentUser = useSelector((state) => state.auth.currentUser);
   const init = async () => {
     if (accessToken) {
       if (!currentUser) {
         const currentUserApiAsyncAction = await dispatch(
-          getCurrentUserApiAsync()
+          getCurrentUserApiAsync(id)
         );
         if (isRejected(currentUserApiAsyncAction)) {
           localStorage.clear();

@@ -18,6 +18,7 @@ import { SiBrandfolder } from "react-icons/si";
 import { BiCategoryAlt } from "react-icons/bi";
 import { Layout, Menu, theme } from "antd";
 import { useNavigate } from "react-router-dom";
+import { Button } from "@mui/base";
 const { Header, Sider, Content } = Layout;
 const MainLayout = () => {
   const [collapsed, setCollapsed] = useState(false);
@@ -25,6 +26,15 @@ const MainLayout = () => {
     token: { colorBgContainer },
   } = theme.useToken();
   const navigate = useNavigate();
+
+  const getUser = localStorage.getItem("user");
+  const userData = JSON.parse(getUser);
+
+  // const handleSignOut = () => {
+  //   localStorage.clear();
+  //   navigate("/");
+  // };
+
   return (
     <Layout /* onContextMenu={(e) => e.preventDefault()} */>
       <Sider trigger={null} collapsible collapsed={collapsed}>
@@ -175,12 +185,12 @@ const MainLayout = () => {
             }
           )}
           <div className="d-flex gap-4 align-items-center">
-            <div className="position-relative">
+            {/* <div className="position-relative">
               <IoIosNotifications className="fs-4" />
               <span className="badge bg-warning rounded-circle p-1 position-absolute">
                 3
               </span>
-            </div>
+            </div> */}
 
             <div className="d-flex gap-3 align-items-center dropdown">
               <div>
@@ -197,27 +207,26 @@ const MainLayout = () => {
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                <h5 className="mb-0">Navdeep</h5>
-                <p className="mb-0">navdeepdahiya753@gmail.com</p>
+                <h5 className="mb-0">{userData?.userName}</h5>
+                <p className="mb-0">{userData?.email}</p>
               </div>
               <div className="dropdown-menu" aria-labelledby="dropdownMenuLink">
                 <li>
                   <Link
                     className="dropdown-item py-1 mb-1"
                     style={{ height: "auto", lineHeight: "20px" }}
-                    to="/"
+                    to={`/admin/profile/${userData?._id}`}
                   >
                     View Profile
                   </Link>
                 </li>
                 <li>
-                  <Link
+                  <Button
                     className="dropdown-item py-1 mb-1"
-                    style={{ height: "auto", lineHeight: "20px" }}
-                    to="/"
+                    // onClick={handleSignOut}
                   >
                     Signout
-                  </Link>
+                  </Button>
                 </li>
               </div>
             </div>
