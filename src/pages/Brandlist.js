@@ -134,7 +134,7 @@ const Brandlist = () => {
           alignItems: "center",
         }}
       >
-        <h3 className="mb-4 title">Products</h3>
+        <h3 className="mb-4 title">Brands</h3>
         <Button
           sx={{ marginBottom: "1.5rem" }}
           onClick={handleClickBtnAddBrand}

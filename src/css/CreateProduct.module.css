@@ -1,0 +1,31 @@
+.wrapAvatar{
+    display: flex;
+}
+
+.avatarLabel{
+    margin: 0;
+    display: flex;
+    align-items: center;
+}
+
+.avatarInpWrap{
+    margin-left: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    border: 1px dashed black;
+    border-radius: 8px;
+    cursor: pointer;
+    height: 76px;
+    width: 112px;
+}
+
+.avatarInp{
+    display: none;
+}
+
+.avatarInpTitle{
+    color: #466FFF;
+    text-decoration-line: underline;
+}

@@ -9,6 +9,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { filterSizeApi } from "../../api/size.api";
 import { filterCategoryApi } from "../../api/category.api";
+import { MdOutlineClose } from "react-icons/md";
 
 const customStyles = {
   control: (provided, state) => ({
@@ -45,6 +46,7 @@ const FormUpdateProduct = () => {
   const [sizeDetail, setSizeDetail] = useState([]);
   const [categoryDetail, setCategoryDetail] = useState([]);
   const [productDetail, setProductDetail] = useState(null);
+  const [images, setImages] = useState([]);
 
   const validationSchema = Yup.object({
     productCode: Yup.string().nullable().required("Product code is required"),
@@ -153,11 +155,29 @@ const FormUpdateProduct = () => {
       });
   };
 
+  const convertToBlob = async (filePath, fileName) => {
+    const response = await fetch(filePath);
+    const blob = await response.blob();
+    return new File([blob], fileName);
+  };
+
+  const convertToFiles = async (filePaths) => {
+    const files = await Promise.all(
+      filePaths.map(async (filePath) => {
+        const fileName = filePath.substring(filePath.lastIndexOf("\\") + 1);
+        return convertToBlob(filePath, fileName);
+      })
+    );
+    console.log("files...", files);
+  };
+
   const getProductDetail = async () => {
     getProduct(paramProductCode)
       .then((res) => {
+        const imagesDetail = res?.data?.image;
         setProductDetail(res?.data);
         setInitialValues(buildInitialValues(res?.data));
+        convertToFiles(imagesDetail);
       })
       .catch((err) => {
         console.log("err", err);
@@ -188,6 +208,21 @@ const FormUpdateProduct = () => {
     formik.setFieldValue("color", e);
   };
 
+  const handleChangeImage = (formik) => (e) => {
+    const files = e.target.files;
+    const arrFile = [];
+    for (let index = 0; index < files.length; index++) {
+      const element = files[index];
+      arrFile.push(element);
+    }
+    setImages(arrFile);
+  };
+
+  const handleDeleteImage = (item, index) => {
+    const newArrFile = images?.filter((item, i) => index !== i);
+    setImages(newArrFile);
+  };
+
   const buildBodyUpload = (values) => {
     const arrSize = values?.size?.map((item) =>
       item?.sizeCode ? item?.sizeCode : item
@@ -200,14 +235,33 @@ const FormUpdateProduct = () => {
       item?.categoryName ? item?.categoryName : item
     );
 
-    const newValues = {
-      ...values,
-      brandCode: values.brandCode?.brandCode,
-      size: arrSize,
-      color: arrColor,
-      categories: arrCategories,
-    };
-    return newValues;
+    const bodyFormData = new FormData();
+    bodyFormData.append("productCode", values.productCode);
+    bodyFormData.append("brandCode", values.brandCode);
+    bodyFormData.append("name", values.name);
+    bodyFormData.append("price", Number(values?.price));
+    bodyFormData.append("description", values.description);
+
+    for (let index = 0; index < arrSize.length; index++) {
+      const element = arrSize[index];
+      bodyFormData.append("size", element);
+    }
+
+    for (let index = 0; index < arrColor.length; index++) {
+      const element = arrColor[index];
+      bodyFormData.append("color", element);
+    }
+
+    for (let index = 0; index < arrCategories.length; index++) {
+      const element = arrCategories[index];
+      bodyFormData.append("categories", element);
+    }
+
+    for (let index = 0; index < images.length; index++) {
+      const element = images[index];
+      bodyFormData.append("image", element);
+    }
+    return bodyFormData;
   };
 
   const handleOnSubmit = async (values, formik) => {
@@ -404,7 +458,7 @@ const FormUpdateProduct = () => {
                   </Grid>
 
                   <Grid item xs={12} md={12} lg={12}>
-                    <TextField
+                    {/* <TextField
                       fullWidth
                       id="image"
                       name="image"
@@ -415,7 +469,51 @@ const FormUpdateProduct = () => {
                         formik.touched.image && Boolean(formik.errors.image)
                       }
                       helperText={formik.touched.image && formik.errors.image}
+                    /> */}
+                    <input
+                      type="file"
+                      label="Enter Product image"
+                      name="image"
+                      id="image"
+                      multiple
+                      onChange={handleChangeImage(formik)}
                     />
+                    <div style={{ display: "flex" }}>
+                      {images?.length > 0 &&
+                        images?.map((item, index) => {
+                          item.preview = URL.createObjectURL(item);
+                          return (
+                            <div
+                              key={index}
+                              style={{
+                                margin: "0 0.4rem",
+                                position: "relative",
+                              }}
+                            >
+                              <img
+                                src={item?.preview}
+                                alt="images"
+                                style={{
+                                  height: "76px",
+                                  width: "112px",
+                                }}
+                              />
+                              <div
+                                style={{
+                                  cursor: "pointer",
+                                  position: "absolute",
+                                  right: 0,
+                                  top: 0,
+                                  fontSize: "1.6rem",
+                                }}
+                                onClick={() => handleDeleteImage(item, index)}
+                              >
+                                <MdOutlineClose />
+                              </div>
+                            </div>
+                          );
+                        })}
+                    </div>
                   </Grid>
                 </Grid>
               </Box>
