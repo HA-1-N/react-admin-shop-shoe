@@ -143,7 +143,7 @@ const Brandlist = () => {
         </Button>
       </Box>
       <div>
-        <Table columns={columns} dataSource={data1} />
+        <Table pagination={false} columns={columns} dataSource={data1} />
         <Pagination page={page} count={totalPage} onChange={onChangePage} />
       </div>
       <CustomModal

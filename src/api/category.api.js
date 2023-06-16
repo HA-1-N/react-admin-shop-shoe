@@ -8,3 +8,22 @@ export const filterCategoryApi = async (data, params) => {
     params,
   });
 };
+
+export const createCategoryApi = async (data) => {
+  return await adminRequest.post(`${HTTP_MGMT}/category/create`, data);
+};
+
+export const updateCategoryApi = async (data, id) => {
+  return await adminRequest.post(`${HTTP_MGMT}/category/update/${id}`, data);
+};
+
+export const deleteCategoryApi = async (data) => {
+  return await adminRequest.post(`${HTTP_MGMT}/category/delete`, data);
+};
+
+export const getCategoryByNameApi = async (data) => {
+  return await adminRequest.post(
+    `${HTTP_MGMT}/category/getCategoryByName`,
+    data
+  );
+};

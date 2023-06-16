@@ -39,7 +39,7 @@ const Colorlist = () => {
   const navigate = useNavigate();
 
   const [open, setOpen] = useState(false);
-  const [colorId, setcolorId] = useState("");
+  const [colorId, setColorId] = useState("");
   const [page, setPage] = useState(1);
   const [totalPage, setTotalPage] = useState(0);
   const [colorDetail, setColorDetail] = useState([]);
@@ -47,7 +47,7 @@ const Colorlist = () => {
 
   const showModal = (item) => {
     setOpen(true);
-    setcolorId(item?._id);
+    setColorId(item?._id);
     setColorItem(item);
   };
 
@@ -121,7 +121,7 @@ const Colorlist = () => {
           setTimeout(() => {
             getColorDetail();
           }, 100);
-          toast.success("Delete brand successful");
+          toast.success("Delete color successful");
         } else {
           toast.error("Error");
         }
@@ -153,7 +153,7 @@ const Colorlist = () => {
         </Button>
       </Box>
       <div>
-        <Table columns={columns} dataSource={data1} />
+        <Table pagination={false} columns={columns} dataSource={data1} />
         <Pagination page={page} count={totalPage} onChange={onChangePage} />
       </div>
       <CustomModal
