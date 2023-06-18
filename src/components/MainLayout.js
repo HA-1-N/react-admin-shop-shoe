@@ -110,6 +110,12 @@ const MainLayout = () => {
                   icon: <AiOutlineBgColors className="fs-4" />,
                   label: "Color List",
                 },
+
+                {
+                  key: "list-size",
+                  icon: <AiOutlineBgColors className="fs-4" />,
+                  label: "Size List",
+                },
               ],
             },
             {

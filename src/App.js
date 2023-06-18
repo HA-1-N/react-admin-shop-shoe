@@ -28,6 +28,8 @@ import AuthenticationRouter from "./features/auth/AuthenticationRouter";
 import UpdateProduct from "./pages/product/UpdateProduct";
 import Profile from "./pages/user/profile/Profile";
 import EditProfile from "./pages/user/update/EditProfile";
+import ListSize from "./pages/size/ListSize";
+import FormSize from "./pages/size/FormSize";
 function App() {
   return (
     <Router>
@@ -75,6 +77,10 @@ function App() {
           />
           <Route path="profile/:id" element={<Profile />} />
           <Route path="edit-profile/:id" element={<EditProfile />} />
+
+          <Route path="list-size" element={<ListSize />} />
+          <Route path="size/:id" element={<FormSize />} />
+          <Route path="size" element={<FormSize />} />
         </Route>
       </Routes>
     </Router>

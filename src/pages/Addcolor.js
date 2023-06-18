@@ -78,7 +78,7 @@ const Addcolor = () => {
         const data = {
           ...values,
         };
-        createColorApi(data, colorId)
+        createColorApi(data)
           .then((res) => {
             if (res) {
               formik.resetForm();
