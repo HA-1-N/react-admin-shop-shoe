@@ -79,7 +79,7 @@ const Customers = () => {
     <div>
       <h3 className="mb-4 title">Customers</h3>
       <div>
-        <Table columns={columns} dataSource={data1} />
+        <Table pagination={false} columns={columns} dataSource={data1} />
         <Pagination page={page} count={totalPage} onChange={onChangePage} />
       </div>
     </div>

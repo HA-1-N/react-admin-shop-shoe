@@ -1,10 +1,14 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Table } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { BiEdit } from "react-icons/bi";
 import { AiFillDelete } from "react-icons/ai";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { getOrderByUser, getOrders } from "../features/auth/authSlice";
+import { Box } from "@mui/material";
+import HeaderCommon from "../components/HeaderCommon";
+import { getOrderByIdApi } from "../api/order.api";
+
 const columns = [
   {
     title: "SNo",
@@ -35,46 +39,70 @@ const columns = [
     dataIndex: "date",
   },
 
-  {
-    title: "Action",
-    dataIndex: "action",
-  },
+  // {
+  //   title: "Action",
+  //   dataIndex: "action",
+  // },
 ];
 
 const ViewOrder = () => {
   const location = useLocation();
-  const userId = location.pathname.split("/")[3];
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const params = useParams();
+  const orderId = params.id;
+
+  const [orderDetail, setOrderDetail] = useState("");
+  const [productOrderDetail, setProductOrderDetail] = useState([]);
+
+  const getOrderDetail = () => {
+    getOrderByIdApi(orderId).then((res) => {
+      const data = res?.data?.data;
+      setOrderDetail(data);
+      setProductOrderDetail(data?.products);
+    });
+  };
+
   useEffect(() => {
-    dispatch(getOrderByUser(userId));
+    getOrderDetail();
   }, []);
-  const orderState = useSelector((state) => state.auth.orderbyuser[0].products);
-  console.log(orderState);
+
   const data1 = [];
-  for (let i = 0; i < orderState.length; i++) {
+
+  for (let i = 0; i < productOrderDetail?.length; i++) {
     data1.push({
       key: i + 1,
-      name: orderState[i].product.title,
-      brand: orderState[i].product.brand,
-      count: orderState[i].count,
-      amount: orderState[i].product.price,
-      color: orderState[i].product.color,
-      date: orderState[i].product.createdAt,
-      action: (
-        <>
-          <Link to="/" className=" fs-3 text-danger">
-            <BiEdit />
-          </Link>
-          <Link className="ms-3 fs-3 text-danger" to="/">
-            <AiFillDelete />
-          </Link>
-        </>
-      ),
+      name: productOrderDetail[i].product.name,
+      brand: productOrderDetail[i].product.brand.name,
+      count: productOrderDetail[i].count,
+      amount: productOrderDetail[i].price,
+      color: productOrderDetail[i].color,
+      date: productOrderDetail[i].product.createdAt,
+      // action: (
+      //   <>
+      //     <Link to="/" className=" fs-3 text-danger">
+      //       <BiEdit />
+      //     </Link>
+      //     <Link className="ms-3 fs-3 text-danger" to="/">
+      //       <AiFillDelete />
+      //     </Link>
+      //   </>
+      // ),
     });
   }
+
+  const handleClickBtnReturn = () => {
+    navigate("/admin/orders");
+  };
+
   return (
     <div>
-      <h3 className="mb-4 title">View Order</h3>
+      <Box>
+        <HeaderCommon
+          title={"View order"}
+          handleClickBtn={handleClickBtnReturn}
+        />
+      </Box>
       <div>
         <Table columns={columns} dataSource={data1} />
       </div>
