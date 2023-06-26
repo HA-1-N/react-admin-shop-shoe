@@ -136,12 +136,12 @@ const Productlist = () => {
       key: i + 1,
       productCode: productDetail[i].productCode,
       name: productDetail[i].name,
-      description: productDetail[i].description,
+      description: productDetail[i].description.replace(/<\/?[^>]+(>|$)/g, ""),
       brand: productDetail[i].brand?.name,
-      category: productDetail[i].categories,
-      color: productDetail[i].color,
-      size: productDetail[i].size,
-      price: `${productDetail[i].price}`,
+      category: productDetail[i].categories + ",",
+      color: productDetail[i].colors?.map((item) => item?.colorName) + ",",
+      size: productDetail[i].size + ",",
+      price: `${productDetail[i].price.toLocaleString()}`,
       action: (
         <>
           <Box>
