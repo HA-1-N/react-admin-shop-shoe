@@ -40,8 +40,8 @@ const MainLayout = () => {
       <Sider trigger={null} collapsible collapsed={collapsed}>
         <div className="logo">
           <h2 className="text-white fs-5 text-center py-3 mb-0">
-            <span className="sm-logo">DC</span>
-            <span className="lg-logo">Dev Corner</span>
+            <span className="sm-logo">Admin</span>
+            <span className="lg-logo">Admin Shop Shoe</span>
           </h2>
         </div>
         <Menu
@@ -203,7 +203,7 @@ const MainLayout = () => {
                 <img
                   width={32}
                   height={32}
-                  src="https://stroyka-admin.html.themeforest.scompiler.ru/variants/ltr/images/customers/customer-4-64x64.jpg"
+                  src="https://static.vecteezy.com/system/resources/previews/008/442/086/original/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg"
                   alt=""
                 />
               </div>

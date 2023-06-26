@@ -10,6 +10,7 @@ import { PAGE_SIZE } from "../constants/page.constants";
 import { toast } from "react-toastify";
 import { Box, Button, IconButton, Pagination } from "@mui/material";
 import ModalDeleteProduct from "../modal/ModalDeleteProduct";
+import FormSearchProduct from "./product/FormSearchProduct";
 const columns = [
   {
     title: "productCode",
@@ -192,6 +193,13 @@ const Productlist = () => {
           >
             Add product
           </Button>
+        </Box>
+        <Box sx={{ marginBottom: "1rem" }}>
+          <FormSearchProduct
+            page={page}
+            setProductDetail={setProductDetail}
+            setTotalCount={setTotalCount}
+          />
         </Box>
         <div>
           <Table columns={columns} dataSource={data1} pagination={false} />

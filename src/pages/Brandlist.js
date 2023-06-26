@@ -10,6 +10,7 @@ import { deleteBrandApi, filterBrandApi } from "../api/brand.api";
 import { PAGE_SIZE } from "../constants/page.constants";
 import { toast } from "react-toastify";
 import { Box, Button, Pagination } from "@mui/material";
+import FormSearchBrand from "./brand/FormSearchBrand";
 
 const columns = [
   {
@@ -142,6 +143,14 @@ const Brandlist = () => {
           Add brand
         </Button>
       </Box>
+      <Box sx={{ marginBottom: "1rem" }}>
+        <FormSearchBrand
+          page={page}
+          setBrandDetail={setBrandDetail}
+          setTotalPage={setTotalPage}
+        />
+      </Box>
+
       <div>
         <Table pagination={false} columns={columns} dataSource={data1} />
         <Pagination page={page} count={totalPage} onChange={onChangePage} />

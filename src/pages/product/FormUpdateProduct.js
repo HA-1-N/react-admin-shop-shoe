@@ -291,7 +291,7 @@ const FormUpdateProduct = () => {
         {(formik) => (
           <>
             <Form noValidate autoComplete="off">
-              <pre>{JSON.stringify(formik.values, undefined, 2)}</pre>
+              {/* <pre>{JSON.stringify(formik.values, undefined, 2)}</pre> */}
               <Box>
                 <Grid container spacing={2}>
                   <Grid item xs={12} md={12} lg={12}>
