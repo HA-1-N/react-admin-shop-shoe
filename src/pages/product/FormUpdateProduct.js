@@ -168,7 +168,7 @@ const FormUpdateProduct = () => {
         return convertToBlob(filePath, fileName);
       })
     );
-    console.log("files...", files);
+    setImages(files);
   };
 
   const getProductDetail = async () => {
@@ -227,6 +227,7 @@ const FormUpdateProduct = () => {
     const arrSize = values?.size?.map((item) =>
       item?.sizeCode ? item?.sizeCode : item
     );
+
     const arrColor = values?.color?.map((item) =>
       item?.colorCode ? item?.colorCode : item
     );
@@ -237,7 +238,7 @@ const FormUpdateProduct = () => {
 
     const bodyFormData = new FormData();
     bodyFormData.append("productCode", values.productCode);
-    bodyFormData.append("brandCode", values.brandCode);
+    bodyFormData.append("brandCode", values.brandCode?.brandCode);
     bodyFormData.append("name", values.name);
     bodyFormData.append("price", Number(values?.price));
     bodyFormData.append("description", values.description);
@@ -264,7 +265,8 @@ const FormUpdateProduct = () => {
     return bodyFormData;
   };
 
-  const handleOnSubmit = async (values, formik) => {
+  const handleOnSubmit = async (formik) => {
+    const values = formik?.values;
     const newValues = buildBodyUpload(values);
     updateProduct(newValues, paramProductCode)
       .then((res) => {
@@ -289,6 +291,7 @@ const FormUpdateProduct = () => {
         {(formik) => (
           <>
             <Form noValidate autoComplete="off">
+              <pre>{JSON.stringify(formik.values, undefined, 2)}</pre>
               <Box>
                 <Grid container spacing={2}>
                   <Grid item xs={12} md={12} lg={12}>
@@ -518,7 +521,11 @@ const FormUpdateProduct = () => {
                 </Grid>
               </Box>
               <Box sx={{ marginTop: "1rem" }}>
-                <Button variant="contained" type="submit">
+                <Button
+                  variant="contained"
+                  type="submit"
+                  onClick={() => handleOnSubmit(formik)}
+                >
                   Submit
                 </Button>
               </Box>
