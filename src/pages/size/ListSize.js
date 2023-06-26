@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 import { deleteSizeApi, filterSizeApi } from "../../api/size.api";
 import CustomModal from "../../components/CustomModal";
 import { PAGE_SIZE } from "../../constants/page.constants";
+import FormSearchCategory from "./FormSearchSize";
 
 const columns = [
   {
@@ -142,6 +143,13 @@ const ListSize = () => {
         <Button sx={{ marginBottom: "1.5rem" }} onClick={handleClickBtnAddSize}>
           Add size
         </Button>
+      </Box>
+      <Box sx={{ marginBottom: "1rem" }}>
+        <FormSearchCategory
+          page={page}
+          setSizeDetail={setSizeDetail}
+          setTotalPage={setTotalPage}
+        />
       </Box>
       <div>
         <Table pagination={false} columns={columns} dataSource={data1} />

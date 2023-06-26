@@ -14,6 +14,7 @@ import { PAGE_SIZE } from "../constants/page.constants";
 import { deleteCategoryApi, filterCategoryApi } from "../api/category.api";
 import { toast } from "react-toastify";
 import { Box, Button, Pagination } from "@mui/material";
+import FormSearchCategory from "./category/FormSearchCategory";
 
 const columns = [
   {
@@ -145,6 +146,14 @@ const Categorylist = () => {
         >
           Add category
         </Button>
+      </Box>
+
+      <Box sx={{ marginBottom: "1rem" }}>
+        <FormSearchCategory
+          page={page}
+          setCategoryDetail={setCategoryDetail}
+          setTotalPage={setTotalPage}
+        />
       </Box>
 
       <div>

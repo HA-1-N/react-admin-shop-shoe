@@ -14,6 +14,7 @@ import { PAGE_SIZE } from "../constants/page.constants";
 import { deleteColorApi, filterColorApi } from "../api/color.api";
 import { toast } from "react-toastify";
 import { Box, Button, Pagination } from "@mui/material";
+import FormSearchColor from "./color/FormSearchColor";
 
 const columns = [
   {
@@ -151,6 +152,13 @@ const Colorlist = () => {
         >
           Add color
         </Button>
+      </Box>
+      <Box sx={{ marginBottom: "1rem" }}>
+        <FormSearchColor
+          page={page}
+          setColorDetail={setColorDetail}
+          setTotalPage={setTotalPage}
+        />
       </Box>
       <div>
         <Table pagination={false} columns={columns} dataSource={data1} />
