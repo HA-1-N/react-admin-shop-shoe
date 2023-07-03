@@ -48,10 +48,10 @@ const ModalDeleteProduct = (props) => {
             }}
           >
             <Button type="button" variant="outlined" onClick={handleCancel}>
-              Huỷ
+              Cancel
             </Button>
             <Button type="button" variant="contained" onClick={handleOnSubmit}>
-              Xác nhận
+              Submit
             </Button>
           </Stack>
         </Box>
