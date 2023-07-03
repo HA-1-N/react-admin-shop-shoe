@@ -156,12 +156,12 @@ const Dashboard = () => {
           <Column {...config} />
         </div>
       </div>
-      <div className="mt-4">
+      {/* <div className="mt-4">
         <h3 className="mb-5 title">Recent Orders</h3>
         <div>
           <Table columns={columns} dataSource={data1} />
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

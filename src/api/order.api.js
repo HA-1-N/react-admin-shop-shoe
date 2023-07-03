@@ -10,3 +10,10 @@ export const getAllOrderApi = async () => {
 export const getOrderByIdApi = async (id) => {
   return await adminRequest.post(`${HTTP_MGMT}/order/get-orders-user-id/${id}`);
 };
+
+export const updateStatusOrderApi = async (data, id) => {
+  return await adminRequest.put(
+    `${HTTP_MGMT}/order/update-order-status/${id}`,
+    data
+  );
+};

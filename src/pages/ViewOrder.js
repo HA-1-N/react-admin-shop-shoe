@@ -77,7 +77,7 @@ const ViewOrder = () => {
       count: productOrderDetail[i].count,
       amount: productOrderDetail[i].price,
       color: productOrderDetail[i].color,
-      date: productOrderDetail[i].product.createdAt,
+      date: new Date(productOrderDetail[i].product.createdAt).toLocaleString(),
       // action: (
       //   <>
       //     <Link to="/" className=" fs-3 text-danger">
