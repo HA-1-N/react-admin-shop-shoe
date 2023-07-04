@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const BASE_URL = "http://localhost:5000/api";
+const BASE_URL = "https://api-shop-shoe.onrender.com/api";
+// const BASE_URL = "http://localhost:5000/api";
 
 const getUser = localStorage.getItem("user");
 const user = JSON.parse(getUser);
