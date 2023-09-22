@@ -12,7 +12,7 @@ let schema = yup.object().shape({
   //   .string()
   //   .email("Email should be valid")
   //   .required("Email is Required"),
-  userName: yup.string().required("userName is Required"),
+  email: yup.string().required("email is Required"),
   password: yup.string().required("Password is Required"),
 });
 const Login = () => {
@@ -20,7 +20,7 @@ const Login = () => {
   const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
-      userName: "",
+      email: "",
       password: "",
     },
     validationSchema: schema,
@@ -57,14 +57,14 @@ const Login = () => {
           <CustomInput
             type="text"
             label="Email Address"
-            id="userName"
-            name="userName"
-            onChng={formik.handleChange("userName")}
-            onBlr={formik.handleBlur("userName")}
-            val={formik.values.userName}
+            id="email"
+            name="email"
+            onChng={formik.handleChange("email")}
+            onBlr={formik.handleBlur("email")}
+            val={formik.values.email}
           />
           <div className="error mt-2">
-            {formik.touched.userName && formik.errors.userName}
+            {formik.touched.email && formik.errors.email}
           </div>
           <CustomInput
             type="password"

@@ -3,7 +3,7 @@ import { config } from "../../utils/axiosconfig";
 import { base_url } from "../../utils/baseUrl";
 
 const login = async (user) => {
-  const response = await axios.post(`${base_url}auth/login`, user);
+  const response = await axios.post(`${base_url}users/login`, user);
   if (response.data) {
     localStorage.setItem("user", JSON.stringify(response.data));
   }
@@ -25,7 +25,7 @@ const getOrder = async (id) => {
 };
 
 const getCurrentUser = async (id) => {
-  const response = await axios.get(`${base_url}user/current-user/${id}`);
+  const response = await axios.get(`${base_url}users/current-user/${id}`);
 
   return response.data;
 };

@@ -8,8 +8,8 @@ const AuthenticationRouter = (props) => {
   const dispatch = useDispatch();
   const getUser = localStorage.getItem("user");
   const user = JSON.parse(getUser);
-  const accessToken = user?.accessToken;
-  const id = user?._id;
+  const accessToken = user?.token;
+  const id = user?.id;
   const currentUser = useSelector((state) => state.auth.currentUser);
   const init = async () => {
     if (accessToken) {
