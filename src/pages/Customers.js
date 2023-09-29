@@ -8,12 +8,12 @@ import { filterUserApi } from "../api/user.api";
 import { Pagination } from "@mui/material";
 const columns = [
   {
-    title: "SNo",
-    dataIndex: "key",
+    title: "ID",
+    dataIndex: "id",
   },
   {
     title: "User name",
-    dataIndex: "userName",
+    dataIndex: "name",
     sorter: (a, b) => a.name.length - b.name.length,
   },
   {
@@ -21,8 +21,8 @@ const columns = [
     dataIndex: "email",
   },
   {
-    title: "Phone",
-    dataIndex: "phone",
+    title: "age",
+    dataIndex: "age",
   },
 ];
 
@@ -35,8 +35,7 @@ const Customers = () => {
 
   const getUserDetail = async () => {
     const data = {
-      userName: "",
-      email: "",
+      keyword: "",
     };
     const params = {
       page: page,
@@ -45,8 +44,8 @@ const Customers = () => {
 
     filterUserApi(data, params)
       .then((res) => {
-        setUserDetail(res?.data?.data);
-        setTotalPage(res?.data?.pagination?.totalPages);
+        setUserDetail(res?.data?.users);
+        setTotalPage(res?.data?.totalPage);
       })
       .catch((err) => {
         console.log(err);
@@ -56,7 +55,7 @@ const Customers = () => {
   useEffect(() => {
     // dispatch(getUsers());
     getUserDetail();
-  }, []);
+  }, [page]);
 
   const onChangePage = (e, pageNumber) => {
     setPage(pageNumber);
@@ -66,11 +65,11 @@ const Customers = () => {
   for (let i = 0; i < userDetail.length; i++) {
     if (userDetail[i].isAdmin !== true) {
       data1.push({
-        key: i + 1,
+        id: userDetail[i].id,
         // name: customerstate[i].firstname + " " + customerstate[i].lastname,
-        userName: userDetail[i].userName,
+        name: userDetail[i].name,
         email: userDetail[i].email,
-        mobile: userDetail[i].mobile,
+        age: userDetail[i].age,
       });
     }
   }
